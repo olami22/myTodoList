@@ -1,0 +1,198 @@
+body{
+    background-color:#F2F0EB;
+}
+
+.todo-body{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left:105px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    width: 680px;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+#task-head{
+    font-family: "Roboto Slab", serif;
+    font-weight: 700;
+    font-size: 53px;
+    color:  #160103;/*#E63946*/
+
+}
+
+
+#today-date{
+    font-weight: 500;
+    font-size: 15px;
+    color: #92918eea;
+}
+
+#num-task{
+    font-weight: 500;
+    font-size: 15px;
+    color: #92918eea;
+}
+
+#task-list-el {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 600px; /* Adjust as needed */
+}
+
+#task-list-single-el {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 12px 16px;
+    margin-bottom: 6px;
+    gap: 16px;
+}
+
+
+
+/* Allow the text span to take up the remaining space */
+#task-text-el {
+    flex-grow: 1;
+    color: #92918eea;
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+}
+
+
+#clearBtn {
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+}
+
+#clearBtn:hover {
+    color: #E63946;
+}
+
+#task-list-single-el:hover #clearBtn{
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #92918eea;
+    font-family: "Inter", sans-serif;
+}
+
+#checkbox-el {
+    accent-color: #ef4444; /* Matches the red checked state from your image */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 28px;
+}
+
+#num-task-remain{
+    color:  #E63946;
+}
+
+#num-task-done{
+    color: #160103;
+}
+
+#task-input{
+    line-height: 25px;
+    /*width: 550px;*/
+    width:80%;
+    border: 1px solid #92918eea;
+    border-radius: none;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#add-task-btn{
+    width: 55px;
+    height: 43px;
+    color: white;
+    background-color: #E63946;
+    border:0px;
+}
+
+.task-state{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    
+
+}
+
+#active-link{
+    color: #92918eea;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#all-link{
+    color: #92918eea;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#complete-link{
+    color: #92918eea;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+#active-link:hover{
+    color: #160103;
+}
+
+#all-link:hover{
+    color: #160103;
+}
+
+#complete-link:hover{
+    color: #160103;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar{
+    position: fixed;
+    background-color: black;
+    width: 250px;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    display: none;
+}
+
+.open .sidebar{
+    display:block;
+}

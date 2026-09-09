@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="index.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+            
+        <title>My Todo</title>
+    </head>
+
+    <body>
+       
+        
+        <div class="todo-body">
+            <nav>
+                <p id="show info"></p>
+            </nav>
+            <div class="todo-heading">
+                <h4 id="today-date"></h4>
+                <h3 id="greeting"> Welcome, {Username}!</h3>
+                <h1 id="task-head">Tasks</h1>
+            </div>
+            
+            <div>
+                <p id="num-task"> <span id="num-task-remain"> {No. of Task} </span>remaining  <span id="num-task-done">  {No. of Task} </span>done </p>
+                <input id="task-input" type="text" placeholder="Add a new task..."/>
+                <button id="add-task-btn"> Add </button>
+                <div class="task-state">
+                    <p><a href="" id="all-link">ALL</a></p>
+                    <p><a href="" id="active-link">ACTIVE</a></p>
+                    <p><a href="" id="complete-link">COMPLETED</a></p>
+                </div>
+                <p>Clear {No. of Task} completed</p>
+
+            </div>
+
+            <div>
+                <ul id="task-list-el">
+                </ul>
+            </div>
+
+        </div>
+        <script src="index.js"></script>
+
+    </body>
+
+</html>
