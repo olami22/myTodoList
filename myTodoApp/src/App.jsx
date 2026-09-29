@@ -1,113 +1,194 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
+import { api } from './api/client.js'
+import { useAuth } from './features/auth/useAuth.js'
+import { useNotes } from './features/notes/useNotes.js'
 import Todohead from './components/Todohead.jsx'
 import Todo from './Pages/Todo.jsx'
 import TodoActive from './Pages/TodoActive.jsx'
 import TodoComplete from './Pages/TodoComplete.jsx'
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
+import LoginPage from './Pages/Login.jsx'
+import RegisterPage from './Pages/Register.jsx'
+import NotesPanel from './components/NotesPanel.jsx'
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 
 function App() {
   const [todo, setTodo] = useState([])
   const [error, setError] = useState('')
+  const { currentUser, isAuthenticated, isLoading, login, register, logout } = useAuth()
+  const { notes, addNote, deleteNote } = useNotes(isAuthenticated)
+
+  const fetchTodo = useCallback(async () => {
+    if (!isAuthenticated) {
+      setTodo([])
+      return
+    }
+
+    try {
+      const { data } = await api.get('/')
+      setTodo(data)
+      setError('')
+    } catch (requestError) {
+      setError('Could not load todos.')
+      console.error(requestError)
+    }
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchTodo()
+    }
+  }, [isAuthenticated, fetchTodo])
 
   async function deleteTodo(todoId) {
-    await axios.delete(`http://127.0.0.1:8000/todo/${todoId}`)
+    await api.delete(`/todo/${todoId}`)
   }
 
   async function updateTodo(todoId, completed) {
-    await axios.put(`http://127.0.0.1:8000/todo/${todoId}`, 
-      {
-        "completed": completed
-      }
-    )   
+    await api.put(`/todo/${todoId}`, {
+      completed: completed,
+    })
   }
 
-  async function fetchTodo(){
-      try {
-          const { data } = await axios.get("http://127.0.0.1:8000/")
-          setTodo(data)
-      } catch (requestError) {
-          setError('Could not load todos.')
-          console.error(requestError)
-      }
-
-      }
-
-  useEffect(() => {
-      fetchTodo()
-  }, [])
-
-    function handleTaskAdded() {
-      fetchTodo()
-    }
+  function handleTaskAdded() {
+    fetchTodo()
+  }
 
   async function handleDelete(todoId) {
-      try {
-          await deleteTodo(todoId)
-          setTodo((currentTodos) => currentTodos.filter((item) => item.id !== todoId))
-      } catch (requestError) {
-          setError('Could not delete todo.')
-          console.error(requestError)
-      }
+    try {
+      await deleteTodo(todoId)
+      setTodo((currentTodos) => currentTodos.filter((item) => item.id !== todoId))
+    } catch (requestError) {
+      setError('Could not delete todo.')
+      console.error(requestError)
+    }
   }
 
   async function handleCompletionChange(todoId, completed) {
-  try {
+    try {
       await updateTodo(todoId, completed)
 
       setTodo((currentTodos) =>
-          currentTodos.map((item) =>
-              item.id === todoId
-                  ? { ...item, completed: completed }
-                  : item
-          )
+        currentTodos.map((item) =>
+          item.id === todoId ? { ...item, completed: completed } : item
+        )
       )
-
-  } catch (requestError) {
+    } catch (requestError) {
       setError('Could not update todo.')
       console.error(requestError)
+    }
   }
-}
-  const activeCount = todo.filter(
-        (item) => !item.completed
-    ).length
 
-  const completedCount = todo.filter(
-      (item) => item.completed
-  ).length
+  async function handleLogin(username, password) {
+    return login(username, password)
+  }
+
+  async function handleRegister(username, password) {
+    await register(username, password)
+  }
+
+  async function handleLogout() {
+    await logout()
+    setTodo([])
+  }
+
+  async function handleAddNote({ title, content }) {
+    await addNote({ title, content })
+  }
+
+  async function handleDeleteNote(noteId) {
+    await deleteNote(noteId)
+  }
+
+  const activeCount = todo.filter((item) => !item.completed).length
+  const completedCount = todo.filter((item) => item.completed).length
+
+  if (isLoading) return null
 
   return (
-    <>
-      <Router>
-        <Todohead 
+    <Router>
+      {isAuthenticated && (
+        <Todohead
           onTaskAdded={handleTaskAdded}
           activeCount={activeCount}
           completedCount={completedCount}
-         />
+          currentUser={currentUser}
+        />
+      )}
 
-        <Routes>
-          <Route path="/" element={<Todo 
-            todo={todo}
-            onDelete={handleDelete}
-            onComplete={handleCompletionChange}
-            />}/>
+      {error && <p className="app-error">{error}</p>}
 
-          <Route path="/complete" element={<TodoComplete 
-            todo={todo}
-            onDelete={handleDelete}
-            onComplete={handleCompletionChange}/>}/>
-          
-          <Route path="/active" element={<TodoActive
-            todo={todo} 
-            onDelete={handleDelete}
-            onComplete={handleCompletionChange}/>}/>
+      <Routes>
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} />}
+        />
 
-        </Routes>
+        <Route
+          path="/register"
+          element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage onRegister={handleRegister} />}
+        />
+
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Todo
+                todo={todo}
+                onDelete={handleDelete}
+                onComplete={handleCompletionChange}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/complete"
+          element={
+            isAuthenticated ? (
+              <TodoComplete
+                todo={todo}
+                onDelete={handleDelete}
+                onComplete={handleCompletionChange}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/active"
+          element={
+            isAuthenticated ? (
+              <TodoActive
+                todo={todo}
+                onDelete={handleDelete}
+                onComplete={handleCompletionChange}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      </Routes>
+
+      {isAuthenticated && (
+        <div className="todo-body notes-section">
+          <NotesPanel
+            notes={notes}
+            onAddNote={handleAddNote}
+            onDeleteNote={handleDeleteNote}
+          />
+          <button type="button" className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      )}
         
-      </Router>
-      
-    </>
+    </Router>
   )
 }
 

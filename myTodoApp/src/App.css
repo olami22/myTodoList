@@ -1,11 +1,13 @@
-body{
-    background-color:#F2F0EB;
+body {
+    background-color: #F2F0EB;
+    margin: 0;
+    font-family: "Inter", sans-serif;
 }
 
-.todo-body{
+.todo-body {
     margin-left: auto;
     margin-right: auto;
-    padding-left:105px;
+    padding-left: 105px;
     padding-top: 20px;
     padding-bottom: 10px;
     width: 680px;
@@ -13,22 +15,26 @@ body{
     font-family: "Inter", sans-serif;
 }
 
-#task-head{
+.todo-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#task-head {
     font-family: "Roboto Slab", serif;
     font-weight: 700;
     font-size: 53px;
-    color:  #160103;/*#E63946*/
-
+    color: #160103;
 }
 
-
-#today-date{
+#today-date {
     font-weight: 500;
     font-size: 15px;
     color: #92918eea;
 }
 
-#num-task{
+#num-task {
     font-weight: 500;
     font-size: 15px;
     color: #92918eea;
@@ -38,7 +44,7 @@ body{
     list-style: none;
     padding: 0;
     margin: 0;
-    max-width: 600px; /* Adjust as needed */
+    max-width: 600px;
 }
 
 #task-list-single-el {
@@ -51,16 +57,12 @@ body{
     gap: 16px;
 }
 
-
-
-/* Allow the text span to take up the remaining space */
 .task-text-el {
     flex-grow: 1;
     color: #92918eea;
     font-size: 14px;
     font-family: "Inter", sans-serif;
 }
-
 
 #clearBtn {
     background: none;
@@ -75,7 +77,7 @@ body{
     color: #E63946;
 }
 
-#task-list-single-el:hover #clearBtn{
+#task-list-single-el:hover #clearBtn {
     background: none;
     border: none;
     font-size: 30px;
@@ -85,26 +87,23 @@ body{
 }
 
 #checkbox-el {
-    accent-color: #ef4444; /* Matches the red checked state from your image */
+    accent-color: #ef4444;
     width: 16px;
     height: 16px;
     cursor: pointer;
-    border-radius: 28px;
-
 }
 
-#num-task-remain{
-    color:  #E63946;
+#num-task-remain {
+    color: #E63946;
 }
 
-#num-task-done{
+#num-task-done {
     color: #160103;
 }
 
-#task-input{
+#task-input {
     line-height: 25px;
-    /*width: 550px;*/
-    width:80%;
+    width: 90%;
     border: 1px solid #92918eea;
     border-radius: none;
     padding: 8px 12px;
@@ -112,57 +111,187 @@ body{
     box-sizing: border-box;
 }
 
-#add-task-btn{
+#add-task-btn {
     width: 55px;
     height: 43px;
     color: white;
     background-color: #E63946;
-    border:0px;
+    border: 0px;
+    cursor: pointer;
 }
 
-.task-state{
+.task-state {
     display: flex;
     justify-content: space-between;
     width: 200px;
-    
-
 }
 
-#active-link{
+#active-link,
+#all-link,
+#complete-link {
     color: #92918eea;
     font-family: "Inter", sans-serif;
     font-size: 12px;
     font-weight: 600;
 }
 
-#all-link{
-    color: #92918eea;
-    font-family: "Inter", sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-#complete-link{
-    color: #92918eea;
-    font-family: "Inter", sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-
-#active-link:hover{
+#active-link:hover,
+#all-link:hover,
+#complete-link:hover {
     color: #160103;
 }
 
-#all-link:hover{
-    color: #160103;
-}
-
-#complete-link:hover{
-    color: #160103;
-}
-
-
-.is-completed{
+.is-completed {
     text-decoration: line-through;
+}
+
+.app-error {
+    max-width: 680px;
+    margin: 16px auto 0;
+    padding: 12px 18px;
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.logout-button {
+    width: fit-content;
+    padding: 8px 12px;
+    border: 1px solid #E63946;
+    background-color: transparent;
+    color: #E63946;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.auth-page {
+    max-width: 420px;
+    margin: 64px auto 0;
+    padding: 32px 24px;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+}
+
+.auth-page h2 {
+    margin-top: 0;
+    font-size: 32px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.auth-form input {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    font-size: 16px;
+}
+
+.auth-form button {
+    background-color: #E63946;
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-form button:hover {
+    opacity: 0.9;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.auth-error {
+    color: #b91c1c;
+    font-size: 14px;
+    margin: 0;
+}
+
+.note-panel {
+    width: 100%;
+    max-width: none;
+    margin: 5px 0 16px;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    padding: 30px 24px;
+    box-sizing: border-box;
+}
+
+.note-panel h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.note-form input,
+.note-form textarea {
+    border: 1px solid #d1d5db;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+}
+
+.note-form textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.note-form button {
+    width: fit-content;
+    padding: 10px 16px;
+    background-color: #160103;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.note-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-item {
+    border: 1px solid #e5e7eb;
+    padding: 12px 14px;
+    background: #fafafa;
+}
+
+.note-item h4 {
+    margin: 0 0 8px;
+}
+
+.note-item p {
+    margin: 0 0 10px;
+    color: #4b5563;
+}
+
+.note-item button {
+    background: transparent;
+    border: 1px solid #E63946;
+    color: #E63946;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.empty-notes {
+    color: #6b7280;
+    margin: 0;
 }

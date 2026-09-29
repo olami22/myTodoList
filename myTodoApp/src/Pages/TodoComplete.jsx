@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import IsCompleted from "../components/isCompleted.jsx"
+import IsCompleted from "../components/IsCompleted.jsx"
 
 
 function TodoComplete({ todo, onDelete, onComplete }) {
