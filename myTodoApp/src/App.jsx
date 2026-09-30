@@ -103,7 +103,13 @@ function App() {
   const activeCount = todo.filter((item) => !item.completed).length
   const completedCount = todo.filter((item) => item.completed).length
 
-  if (isLoading) return null
+  if (isLoading) {
+    return (
+      <main className="auth-page" role="status" aria-live="polite">
+        Checking your session...
+      </main>
+    )
+  }
 
   return (
     <Router>
