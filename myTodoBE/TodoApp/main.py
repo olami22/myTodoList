@@ -35,6 +35,6 @@ async def protect_cookie_authenticated_mutations(request: Request, call_next):
 
     return await call_next(request)
 
-app.include_router(auth_router)
-app.include_router(todo_router)
-app.include_router(notes_router)
+app.include_router(auth_router, prefix="/api")
+app.include_router(todo_router, prefix="/api")
+app.include_router(notes_router, prefix="/api")

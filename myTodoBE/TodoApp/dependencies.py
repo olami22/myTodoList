@@ -44,7 +44,7 @@ CORS_ORIGINS = tuple(
 )
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login", auto_error=False)
 
 
 def get_db():
