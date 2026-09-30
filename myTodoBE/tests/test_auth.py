@@ -15,6 +15,7 @@ from fastapi.testclient import TestClient
 
 from TodoApp.main import app
 from TodoApp.database import Base, engine
+from TodoApp.dependencies import _load_cors_origins
 
 
 Base.metadata.create_all(bind=engine)
@@ -35,6 +36,18 @@ def teardown_module():
 
 def unique_username(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex[:8]}"
+
+
+def test_cors_origins_include_vercel_deployment_domains(monkeypatch):
+    monkeypatch.delenv("CORS_ORIGINS", raising=False)
+    monkeypatch.setenv("VERCEL_ENV", "preview")
+    monkeypatch.setenv("VERCEL_URL", "mytodo-git-feature.vercel.app")
+    monkeypatch.setenv("VERCEL_PROJECT_PRODUCTION_URL", "mytodo.example.com")
+
+    assert _load_cors_origins() == (
+        "https://mytodo-git-feature.vercel.app",
+        "https://mytodo.example.com",
+    )
 
 
 def test_register_and_login_user():

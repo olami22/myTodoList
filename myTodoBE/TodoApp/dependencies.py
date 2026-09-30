@@ -18,8 +18,11 @@ except ImportError:
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
-    if os.getenv("ENVIRONMENT", "development").lower() == "production":
-        raise RuntimeError("SECRET_KEY must be set in production.")
+    vercel_environment = os.getenv("VERCEL_ENV", "").lower()
+    is_deployed = os.getenv("VERCEL") == "1" or vercel_environment in {"production", "preview"}
+    is_production = os.getenv("ENVIRONMENT", "").lower() == "production"
+    if is_deployed or is_production:
+        raise RuntimeError("SECRET_KEY must be set for deployed environments.")
     SECRET_KEY = secrets.token_urlsafe(32)
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
@@ -37,11 +40,24 @@ DEFAULT_CORS_ORIGINS = (
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
 )
-CORS_ORIGINS = tuple(
-    origin.strip()
-    for origin in os.getenv("CORS_ORIGINS", ",".join(DEFAULT_CORS_ORIGINS)).split(",")
-    if origin.strip()
-)
+
+
+def _load_cors_origins() -> tuple[str, ...]:
+    configured_origins = os.getenv("CORS_ORIGINS")
+    if configured_origins is None:
+        origins = [] if os.getenv("VERCEL_ENV") else list(DEFAULT_CORS_ORIGINS)
+    else:
+        origins = [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
+
+    for variable in ("VERCEL_URL", "VERCEL_PROJECT_PRODUCTION_URL"):
+        host = os.getenv(variable, "").strip().rstrip("/")
+        if host:
+            origins.append(host if "://" in host else f"https://{host}")
+
+    return tuple(dict.fromkeys(origins))
+
+
+CORS_ORIGINS = _load_cors_origins()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login", auto_error=False)
