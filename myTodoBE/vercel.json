@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "mytodoapp": {
+      "root": "myTodoApp",
+      "framework": "vite"
+    },
+    "mytodobe": {
+      "root": "myTodoBE",
+      "framework": "fastapi"
+    }
+  },
+  "rewrites": []
+}
